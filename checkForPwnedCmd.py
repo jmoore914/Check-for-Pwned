@@ -1,10 +1,9 @@
-import checkForPwned
+import checkForPwnedShared
 import tkinter as tk
 from tkinter import filedialog
 import os
 import sys
 import time
-import win32gui
 
 
 def inputWithInterrupt(msg):
@@ -22,13 +21,12 @@ while True:
                 fileName = inputWithInterrupt(
                     'File location (enter "browse" to open file dialog):\n')
                 if fileName == 'browse':
-                    hwnd = win32gui.GetForegroundWindow()
                     root = tk.Tk()
                     root.withdraw()
-                    root.fileName = filedialog.askopenfilename()
-                    print(root.fileName)
-                    win32gui.SetForegroundWindow(hwnd)
-                if not os.path.isfile(root.fileName):
+                    fileName = filedialog.askopenfilename()
+                    print(fileName)
+                    root.destroy()
+                if not os.path.isfile(fileName):
                     raise ValueError('Not a real file.')
             except ValueError:
                 print('Invalid file path. Please try again.')
@@ -75,7 +73,8 @@ while True:
             break
         print('')
 
-        print(checkForPwned.checkCSV(root.fileName, accountCol, pwCol, headerRow))
+        print(checkForPwnedShared.checkCSV(
+            fileName, accountCol, pwCol, headerRow))
         print('')
         input('Press ENTER to exit...')
     except ValueError as e:

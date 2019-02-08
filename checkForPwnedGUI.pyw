@@ -1,6 +1,6 @@
 import wx
 import wx.adv
-import checkForPwned
+import checkForPwnedShared
 import os
 
 
@@ -71,7 +71,7 @@ class UI(wx.Frame):
         try:
             if not os.path.isfile(self.fileBrowse.GetPath()):
                 raise ValueError('Invalid file path. Please try again.')
-            resp = checkForPwned.checkCSV(self.fileBrowse.GetPath(
+            resp = checkForPwnedShared.checkCSV(self.fileBrowse.GetPath(
             ), self.nameColCtrl.GetValue(), self.pwColCtrl.GetValue(), self.headerColYes.GetValue())
             wx.MessageBox(resp, 'Pwned Results', wx.OK)
         except ValueError as e:
