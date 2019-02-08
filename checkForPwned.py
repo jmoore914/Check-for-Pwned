@@ -1,5 +1,5 @@
 import hashlib
-import requests
+from urllib.request import Request, urlopen
 import csv
 
 
@@ -9,9 +9,10 @@ def checkPW(pw):
     m.update(bytes(pw, 'utf-8'))
     shaPass = m.hexdigest()
     shortPass = shaPass[0:5]
-    response = requests.get(
-        'https://api.pwnedpasswords.com/range/' + shortPass)
-    if (shaPass[5:].upper() in response.text):
+    req = Request('https://api.pwnedpasswords.com/range/' +
+                  shortPass, headers={'User-Agent': 'Mozilla/5.0'})
+    response = urlopen(req).read().decode()
+    if (shaPass[5:].upper() in response):
         return True
     else:
         return False
